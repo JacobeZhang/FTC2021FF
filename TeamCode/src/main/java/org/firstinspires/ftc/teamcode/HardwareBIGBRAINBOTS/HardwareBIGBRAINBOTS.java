@@ -35,6 +35,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
 /**
  * This is NOT an opmode.
  *
@@ -107,14 +109,52 @@ public class HardwareBIGBRAINBOTS
         IntakeDrive.setPower(0);
         TransferDrive.setPower(0);
 
+        FrontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        FrontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        RearLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        RearRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
-
+        FrontLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        FrontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        RearLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        RearRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Define and initialize ALL installed servos.
         WobbleGoalArmDrive  = hwMap.get(Servo.class, "arm_motor");
         WobbleGoalClaw = hwMap.get(Servo.class, "arm_claw");
-        WobbleGoalArmDrive.setPosition(MID_SERVO);
-        WobbleGoalClaw.setPosition(MID_SERVO);
+    }
+    public void drive (int power, int EncoderCounts){
+        FrontLeftDrive.setPower(power);
+        FrontRightDrive.setPower(power);
+        RearLeftDrive.setPower(power);
+        RearRightDrive.setPower(power);
+        FrontLeftDrive.setTargetPosition(EncoderCounts);
+        FrontRightDrive.setTargetPosition(EncoderCounts);
+        RearLeftDrive.setTargetPosition(EncoderCounts);
+        RearRightDrive.setTargetPosition(EncoderCounts);
+        telemetry.addData("Motors", "left (%.2f), right (%.2f)", power,power);
+    }
+    public void strafe (int power, int EncoderCounts){
+        FrontLeftDrive.setPower(-1 * power);
+        FrontRightDrive.setPower(power);
+        RearLeftDrive.setPower(power);
+        RearRightDrive.setPower(-1 * power);
+        FrontLeftDrive.setTargetPosition(-1 * EncoderCounts);
+        FrontRightDrive.setTargetPosition(EncoderCounts);
+        RearLeftDrive.setTargetPosition(EncoderCounts);
+        RearRightDrive.setTargetPosition(-1 * EncoderCounts);
+        telemetry.addData("Motors", "left (%.2f), right (%.2f)", 0,power);
+    }
+    public void turn (int power, int EncoderCounts){
+        FrontLeftDrive.setPower(-1 * power);
+        FrontRightDrive.setPower(power);
+        RearLeftDrive.setPower(-1 * power);
+        RearRightDrive.setPower(power);
+        FrontLeftDrive.setTargetPosition(-1 * EncoderCounts);
+        FrontRightDrive.setTargetPosition(EncoderCounts);
+        RearLeftDrive.setTargetPosition(-1 * EncoderCounts);
+        RearRightDrive.setTargetPosition(EncoderCounts);
     }
 }
