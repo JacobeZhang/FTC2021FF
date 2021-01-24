@@ -27,31 +27,19 @@ public class BBBTeleOp extends LinearOpMode {
             double drive = gamepad1.left_stick_y;
             double strafe = gamepad1.left_stick_x;
             double turn = gamepad1.right_stick_x;
-            boolean intake = gamepad1.left_bumper;
-            boolean transfer = gamepad1.right_bumper;
             boolean armup = gamepad1.y;
             boolean armdown = gamepad1.a;
             boolean drop = gamepad1.x;
             boolean clawopen = gamepad1.dpad_left;
             boolean clawclose = gamepad1.dpad_right;
-
-
+            boolean shooterpushring = gamepad1.b;
+            boolean shootershoot = gamepad1.dpad_up;
             double FLPower = Range.clip(drive - strafe - turn, -1.0, 1.0);
             double FRPower = Range.clip(drive + strafe + turn, -1.0, 1.0);
             double BLPower = Range.clip(drive + strafe - turn, -1.0, 1.0);
             double BRPower = Range.clip(drive - strafe + turn, -1.0, 1.0);
-            if (intake){
-                robot.IntakeDrive.setPower(1);
-            }
-            else
-                robot.IntakeDrive.setPower(0);
 
-            if (transfer){
-                robot.TransferDrive.setPower(1);
-            }
-            else
-                robot.TransferDrive.setPower(0);
-
+            robot.IntakeTransferDrive.setPower(1);
             if (armup) {
                 robot.WobbleGoalArmDrive.setPosition(Servo.MAX_POSITION);
             }
@@ -67,6 +55,15 @@ public class BBBTeleOp extends LinearOpMode {
             }
             if (clawclose) {
                 robot.WobbleGoalClaw.setPosition(Servo.MAX_POSITION);
+            }
+            if (shooterpushring) {
+                robot.ShooterPush.setPosition(Servo.MAX_POSITION);
+            }
+            else {
+                robot.ShooterPush.setPosition(Servo.MIN_POSITION);
+            }
+            if (shootershoot) {
+                robot.ShooterFlywheel.setPower(1);
             }
 
             robot.FrontLeftDrive.setPower(FLPower);

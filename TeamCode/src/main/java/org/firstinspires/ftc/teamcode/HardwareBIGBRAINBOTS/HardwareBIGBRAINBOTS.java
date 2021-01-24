@@ -63,10 +63,11 @@ public class HardwareBIGBRAINBOTS
     public DcMotor  FrontRightDrive  = null;
     public DcMotor  RearLeftDrive     = null;
     public DcMotor RearRightDrive  =  null;
-    public DcMotor IntakeDrive  =  null;
-    public DcMotor TransferDrive = null;
+    public DcMotor IntakeTransferDrive  =  null;
+    public DcMotor ShooterFlywheel = null;
     public Servo    WobbleGoalArmDrive    = null;
     public Servo    WobbleGoalClaw   = null;
+    public Servo   ShooterPush = null;
 
     public static final double MID_SERVO       =  0.5 ;
 
@@ -89,25 +90,22 @@ public class HardwareBIGBRAINBOTS
         FrontRightDrive = hwMap.get(DcMotor.class, "FR_DCmotor");
         RearLeftDrive = hwMap.get(DcMotor.class, "RL_DCmotor");
         RearRightDrive = hwMap.get(DcMotor.class, "RR_DCmotor");
-        IntakeDrive    = hwMap.get(DcMotor.class, "IntakeMotor");
-        TransferDrive = hwMap.get(DcMotor.class, "TransferDrive");
+        IntakeTransferDrive    = hwMap.get(DcMotor.class, "IntakeTransferMotor");
+        ShooterFlywheel = hwMap.get(DcMotor.class, "ShooterDrive");
 
 
-
-        FrontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
-        FrontRightDrive.setDirection(DcMotor.Direction.FORWARD);
-        RearLeftDrive.setDirection(DcMotor.Direction.REVERSE);
+        FrontLeftDrive.setDirection(DcMotor.Direction.FORWARD);
+        FrontRightDrive.setDirection(DcMotor.Direction.REVERSE);
+        RearLeftDrive.setDirection(DcMotor.Direction.FORWARD);
         RearRightDrive.setDirection(DcMotor.Direction.REVERSE);
-        IntakeDrive.setDirection(DcMotor.Direction.REVERSE);
-        TransferDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+        IntakeTransferDrive.setDirection(DcMotor.Direction.FORWARD);
 
         // Set all motors to zero power
         FrontLeftDrive.setPower(0);
         FrontRightDrive.setPower(0);
         RearLeftDrive.setPower(0);
         RearRightDrive.setPower(0);
-        IntakeDrive.setPower(0);
-        TransferDrive.setPower(0);
+        IntakeTransferDrive.setPower(0);
 
         FrontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         FrontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -124,6 +122,7 @@ public class HardwareBIGBRAINBOTS
         // Define and initialize ALL installed servos.
         WobbleGoalArmDrive  = hwMap.get(Servo.class, "arm_motor");
         WobbleGoalClaw = hwMap.get(Servo.class, "arm_claw");
+        ShooterPush = hwMap.get(Servo.class, "Shooter_Arm");
     }
     public void drive (int power, int EncoderCounts){
         FrontLeftDrive.setPower(power);
