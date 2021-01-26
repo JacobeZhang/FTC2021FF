@@ -33,7 +33,6 @@ public class BBBTeleOp extends LinearOpMode {
             boolean clawopen = gamepad1.dpad_left;
             boolean clawclose = gamepad1.dpad_right;
             boolean shooterpushring = gamepad1.b;
-            boolean shootershoot = gamepad1.dpad_up;
             double FLPower = Range.clip(drive - strafe - turn, -1.0, 1.0);
             double FRPower = Range.clip(drive + strafe + turn, -1.0, 1.0);
             double BLPower = Range.clip(drive + strafe - turn, -1.0, 1.0);
@@ -60,11 +59,10 @@ public class BBBTeleOp extends LinearOpMode {
                 robot.ShooterPush.setPosition(Servo.MAX_POSITION);
             }
             else {
-                robot.ShooterPush.setPosition(Servo.MIN_POSITION);
+                robot.ShooterPush.setPosition(Servo.MAX_POSITION / 2);
             }
-            if (shootershoot) {
-                robot.ShooterFlywheel.setPower(1);
-            }
+
+            robot.ShooterFlywheel.setPower(1);
 
             robot.FrontLeftDrive.setPower(FLPower);
             robot.FrontRightDrive.setPower(FRPower);
