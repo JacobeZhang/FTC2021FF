@@ -90,7 +90,7 @@ public class HardwareBIGBRAINBOTS
         FrontRightDrive = hwMap.get(DcMotor.class, "FR_DCmotor");
         RearLeftDrive = hwMap.get(DcMotor.class, "RL_DCmotor");
         RearRightDrive = hwMap.get(DcMotor.class, "RR_DCmotor");
-        IntakeTransferDrive    = hwMap.get(DcMotor.class, "IntakeTransferMotor");
+        IntakeTransferDrive = hwMap.get(DcMotor.class, "IntakeTransferMotor");
         ShooterFlywheel = hwMap.get(DcMotor.class, "ShooterDrive");
 
 
@@ -124,18 +124,21 @@ public class HardwareBIGBRAINBOTS
         WobbleGoalClaw = hwMap.get(Servo.class, "arm_claw");
         ShooterPush = hwMap.get(Servo.class, "Shooter_Arm");
     }
-    public void drive (int power, int EncoderCounts){
-        FrontLeftDrive.setPower(power);
-        FrontRightDrive.setPower(power);
-        RearLeftDrive.setPower(power);
-        RearRightDrive.setPower(power);
+    public void drive (double power, int EncoderCounts){
         FrontLeftDrive.setTargetPosition(EncoderCounts);
         FrontRightDrive.setTargetPosition(EncoderCounts);
         RearLeftDrive.setTargetPosition(EncoderCounts);
         RearRightDrive.setTargetPosition(EncoderCounts);
-        telemetry.addData("Motors", "left (%.2f), right (%.2f)", power,power);
+        FrontLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FrontRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        RearLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        RearRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FrontLeftDrive.setPower(power);
+        FrontRightDrive.setPower(power);
+        RearLeftDrive.setPower(power);
+        RearRightDrive.setPower(power);
     }
-    public void strafe (int power, int EncoderCounts){
+    public void strafe (double power, int EncoderCounts){
         FrontLeftDrive.setPower(-1 * power);
         FrontRightDrive.setPower(power);
         RearLeftDrive.setPower(power);
@@ -144,9 +147,9 @@ public class HardwareBIGBRAINBOTS
         FrontRightDrive.setTargetPosition(EncoderCounts);
         RearLeftDrive.setTargetPosition(EncoderCounts);
         RearRightDrive.setTargetPosition(-1 * EncoderCounts);
-        telemetry.addData("Motors", "left (%.2f), right (%.2f)", 0,power);
+        //telemetry.addData("Motors", "left (%.2f), right (%.2f)", 0,power);
     }
-    public void turn (int power, int EncoderCounts){
+    public void turn (double power, int EncoderCounts){
         FrontLeftDrive.setPower(-1 * power);
         FrontRightDrive.setPower(power);
         RearLeftDrive.setPower(-1 * power);

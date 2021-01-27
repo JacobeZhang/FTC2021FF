@@ -50,12 +50,15 @@ public class BBBTeleOp extends LinearOpMode {
             if (clawclose) {
                 robot.WobbleGoalClaw.setPosition(Servo.MAX_POSITION);
             }
-            if (shooterpushring) {
+            boolean buttonCurrent=gamepad1.y;
+            boolean buttonPrev = false;
+            robot.ShooterPush.setPosition(Servo.MAX_POSITION / 2);
+            //checks if the button wasn't pressed last loop but is pressed this loop
+            if (buttonCurrent==true && buttonPrev==false){
                 robot.ShooterPush.setPosition(Servo.MAX_POSITION);
             }
-            else {
-                robot.ShooterPush.setPosition(Servo.MAX_POSITION / 2);
-            }
+            buttonPrev=buttonCurrent;
+
             robot.ShooterFlywheel.setPower(1);
 
             robot.FrontLeftDrive.setPower(FLPower);
