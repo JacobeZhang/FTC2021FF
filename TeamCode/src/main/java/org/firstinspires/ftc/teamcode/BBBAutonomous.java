@@ -15,14 +15,14 @@ public class BBBAutonomous extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         robot.init(this.hardwareMap);
-
         telemetry.addData("Mode", "waiting");
         telemetry.update();
 
         waitForStart();
-        robot.drive(0.5,500000);
+        robot.drive(0.5,1000);
         while (robot.FrontLeftDrive.isBusy() || robot.FrontRightDrive.isBusy() || robot.RearLeftDrive.isBusy() || robot.RearRightDrive.isBusy()) {
-            //do nothing
+            telemetry.addData("Busy", "0");
+            telemetry.update();
         }
         telemetry.addData("Over", "0");
         telemetry.update();
