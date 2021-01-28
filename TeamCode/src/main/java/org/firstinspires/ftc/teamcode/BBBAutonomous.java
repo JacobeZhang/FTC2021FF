@@ -19,7 +19,7 @@ public class BBBAutonomous extends LinearOpMode {
         telemetry.update();
 
         waitForStart();
-        robot.drive(0.5,1000);
+        robot.drive(1,1000);
         while (robot.FrontLeftDrive.isBusy() || robot.FrontRightDrive.isBusy() || robot.RearLeftDrive.isBusy() || robot.RearRightDrive.isBusy()) {
             telemetry.addData("Busy", "0");
             telemetry.update();
