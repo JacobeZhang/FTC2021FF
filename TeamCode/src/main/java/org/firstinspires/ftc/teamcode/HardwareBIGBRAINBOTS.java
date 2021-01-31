@@ -65,7 +65,7 @@ public class HardwareBIGBRAINBOTS
     public DcMotor RearRightDrive  =  null;
     public DcMotor IntakeTransferDrive  =  null;
     public DcMotor ShooterFlywheel = null;
-    public Servo    WobbleGoalArmDrive    = null;
+    public DcMotor    WobbleGoalArmDrive    = null;
     public Servo    WobbleGoalClaw   = null;
     public Servo   ShooterPush = null;
 
@@ -92,12 +92,13 @@ public class HardwareBIGBRAINBOTS
         RearRightDrive = hwMap.get(DcMotor.class, "RR_DCmotor");
         IntakeTransferDrive = hwMap.get(DcMotor.class, "IntakeTransferMotor");
         ShooterFlywheel = hwMap.get(DcMotor.class, "ShooterDrive");
+        WobbleGoalArmDrive  = hwMap.get(DcMotor.class, "arm_motor");
 
 
         FrontLeftDrive.setDirection(DcMotor.Direction.FORWARD);
         FrontRightDrive.setDirection(DcMotor.Direction.REVERSE);
-        RearLeftDrive.setDirection(DcMotor.Direction.FORWARD);
-        RearRightDrive.setDirection(DcMotor.Direction.REVERSE);
+        RearLeftDrive.setDirection(DcMotor.Direction.REVERSE);
+        RearRightDrive.setDirection(DcMotor.Direction.FORWARD);
         IntakeTransferDrive.setDirection(DcMotor.Direction.FORWARD);
 
         // Set all motors to zero power
@@ -106,26 +107,29 @@ public class HardwareBIGBRAINBOTS
         RearLeftDrive.setPower(0);
         RearRightDrive.setPower(0);
         IntakeTransferDrive.setPower(0);
+        WobbleGoalArmDrive.setPower(0);
 
         FrontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         FrontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         RearLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         RearRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        WobbleGoalArmDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
-      //  FrontLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-      //  FrontRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-      //  RearLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-      //  RearRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FrontLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FrontRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        RearLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        RearRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        WobbleGoalArmDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         FrontLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         FrontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         RearLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         RearRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        WobbleGoalArmDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Define and initialize ALL installed servos.
-        WobbleGoalArmDrive  = hwMap.get(Servo.class, "arm_motor");
         WobbleGoalClaw = hwMap.get(Servo.class, "arm_claw");
         ShooterPush = hwMap.get(Servo.class, "Shooter_Arm");
     }
