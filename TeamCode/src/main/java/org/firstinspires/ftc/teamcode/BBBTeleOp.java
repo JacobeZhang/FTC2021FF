@@ -46,7 +46,7 @@ public class BBBTeleOp extends LinearOpMode {
                 robot.IntakeTransferDrive.setPower(-1);
             }
             if (armdown) {
-                robot.WobbleGoalArmDrive.setTargetPosition(-200);
+                robot.WobbleGoalArmDrive.setTargetPosition(-250);
                 robot.WobbleGoalArmDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.WobbleGoalArmDrive.setPower(-0.25);
               //  while (robot.WobbleGoalArmDrive.isBusy()) {
@@ -64,15 +64,15 @@ public class BBBTeleOp extends LinearOpMode {
       //          robot.WobbleGoalArmDrive.setPower(0);
             }
 
-            if (armup) {
-                robot.WobbleGoalArmDrive.setTargetPosition(200);
-                robot.WobbleGoalArmDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.WobbleGoalArmDrive.setPower(1);
-                while (robot.WobbleGoalArmDrive.isBusy()) {
+    //        if (armup) {
+    //            robot.WobbleGoalArmDrive.setTargetPosition(200);
+    //            robot.WobbleGoalArmDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    //            robot.WobbleGoalArmDrive.setPower(1);
+      //          while (robot.WobbleGoalArmDrive.isBusy()) {
 
-                }
-                robot.WobbleGoalArmDrive.setPower(0);
-            }
+        //        }
+         //       robot.WobbleGoalArmDrive.setPower(0);
+     //       }
           //  else {
             //    robot.WobbleGoalArmDrive.setPower(0);
             //}

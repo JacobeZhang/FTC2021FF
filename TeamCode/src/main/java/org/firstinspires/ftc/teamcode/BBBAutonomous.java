@@ -19,7 +19,8 @@ public class BBBAutonomous extends LinearOpMode {
         telemetry.update();
 
         waitForStart();
-        robot.drive(1,1000);
+        robot.resetEncoders();
+        robot.drive(-0.25,-2500);
         while (robot.FrontLeftDrive.isBusy() || robot.FrontRightDrive.isBusy() || robot.RearLeftDrive.isBusy() || robot.RearRightDrive.isBusy()) {
             telemetry.addData("Path0",  "Starting at %7d :%7d :%7d :%7d",
                     robot.FrontLeftDrive.getCurrentPosition(),
@@ -28,6 +29,57 @@ public class BBBAutonomous extends LinearOpMode {
                     robot.RearRightDrive.getCurrentPosition());
             telemetry.update();
         }
+        robot.resetEncoders();
+        robot.strafe(-0.25,1500);
+        while (robot.FrontLeftDrive.isBusy() || robot.FrontRightDrive.isBusy() || robot.RearLeftDrive.isBusy() || robot.RearRightDrive.isBusy()) {
+            telemetry.addData("Path0",  "Starting at %7d :%7d :%7d :%7d",
+                    robot.FrontLeftDrive.getCurrentPosition(),
+                    robot.FrontRightDrive.getCurrentPosition(),
+                    robot.RearLeftDrive.getCurrentPosition(),
+                    robot.RearRightDrive.getCurrentPosition());
+            telemetry.update();
+        }
+        robot.ShooterFlywheel.setPower(1);
+        sleep(1000);
+        robot.ShooterPush.setPosition(Servo.MAX_POSITION / 2);
+        sleep(1000);
+        robot.ShooterPush.setPosition(Servo.MAX_POSITION - 0.1);
+        sleep(1500);
+        robot.ShooterPush.setPosition(Servo.MAX_POSITION / 2);
+        sleep(1000);
+        robot.ShooterPush.setPosition(Servo.MAX_POSITION - 0.1);
+        sleep(1500);
+        robot.ShooterPush.setPosition(Servo.MAX_POSITION / 2);
+        sleep(1000);
+        robot.ShooterPush.setPosition(Servo.MAX_POSITION - 0.1);
+        sleep(1500);
+        robot.ShooterPush.setPosition(Servo.MAX_POSITION / 2);
+        sleep(1000);
+        robot.resetEncoders();
+        robot.drive(-0.25,-500);
+        while (robot.FrontLeftDrive.isBusy() || robot.FrontRightDrive.isBusy() || robot.RearLeftDrive.isBusy() || robot.RearRightDrive.isBusy()) {
+            telemetry.addData("Path0",  "Starting at %7d :%7d :%7d :%7d",
+                    robot.FrontLeftDrive.getCurrentPosition(),
+                    robot.FrontRightDrive.getCurrentPosition(),
+                    robot.RearLeftDrive.getCurrentPosition(),
+                    robot.RearRightDrive.getCurrentPosition());
+            telemetry.update();
+        }
+        robot.WobbleGoalArmDrive.setTargetPosition(-450);
+        robot.WobbleGoalArmDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.WobbleGoalArmDrive.setPower(-0.25);
+        while (robot.WobbleGoalArmDrive.isBusy()) {
+
+        }
+        robot.WobbleGoalArmDrive.setPower(0);
+        robot.WobbleGoalArmDrive.setTargetPosition(250);
+        robot.WobbleGoalArmDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.WobbleGoalArmDrive.setPower(0.25);
+        while (robot.WobbleGoalArmDrive.isBusy()) {
+
+        }
+        robot.WobbleGoalArmDrive.setPower(0);
+
         telemetry.addData("Over", "0");
         telemetry.update();
 
