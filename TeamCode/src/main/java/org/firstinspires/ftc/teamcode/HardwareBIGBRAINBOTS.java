@@ -29,11 +29,16 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
@@ -69,6 +74,7 @@ public class HardwareBIGBRAINBOTS
     public Servo    WobbleGoalClaw   = null;
     public Servo   ShooterPush = null;
 
+
     public static final double MID_SERVO       =  0.5 ;
 
     /* local OpMode members. */
@@ -84,8 +90,7 @@ public class HardwareBIGBRAINBOTS
     public void init(HardwareMap ahwMap) {
         // Save reference to Hardware map
         hwMap = ahwMap;
-
-        // Define and Initialize Motors
+       // Define and Initialize Motors
         FrontLeftDrive  = hwMap.get(DcMotor.class, "FL_DCmotor");
         FrontRightDrive = hwMap.get(DcMotor.class, "FR_DCmotor");
         RearLeftDrive = hwMap.get(DcMotor.class, "RL_DCmotor");
@@ -148,24 +153,40 @@ public class HardwareBIGBRAINBOTS
         RearRightDrive.setPower(power);
     }
     public void strafe (double power, int EncoderCounts){
-        FrontLeftDrive.setPower(-1 * power);
-        FrontRightDrive.setPower(power);
-        RearLeftDrive.setPower(power);
-        RearRightDrive.setPower(-1 * power);
         FrontLeftDrive.setTargetPosition(-1 * EncoderCounts);
         FrontRightDrive.setTargetPosition(EncoderCounts);
         RearLeftDrive.setTargetPosition(EncoderCounts);
         RearRightDrive.setTargetPosition(-1 * EncoderCounts);
+        FrontLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FrontRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        RearLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        RearRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FrontLeftDrive.setPower(-1 * power);
+        FrontRightDrive.setPower(power);
+        RearLeftDrive.setPower(power);
+        RearRightDrive.setPower(-1 * power);
         //telemetry.addData("Motors", "left (%.2f), right (%.2f)", 0,power);
     }
     public void turn (double power, int EncoderCounts){
-        FrontLeftDrive.setPower(-1 * power);
-        FrontRightDrive.setPower(power);
-        RearLeftDrive.setPower(-1 * power);
-        RearRightDrive.setPower(power);
         FrontLeftDrive.setTargetPosition(-1 * EncoderCounts);
         FrontRightDrive.setTargetPosition(EncoderCounts);
         RearLeftDrive.setTargetPosition(-1 * EncoderCounts);
         RearRightDrive.setTargetPosition(EncoderCounts);
+        FrontLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FrontRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        RearLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        RearRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FrontLeftDrive.setPower(-1 * power);
+        FrontRightDrive.setPower(power);
+        RearLeftDrive.setPower(-1 * power);
+        RearRightDrive.setPower(power);
     }
+    public void resetEncoders (){
+        FrontLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FrontRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        RearLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        RearRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        WobbleGoalArmDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+
 }

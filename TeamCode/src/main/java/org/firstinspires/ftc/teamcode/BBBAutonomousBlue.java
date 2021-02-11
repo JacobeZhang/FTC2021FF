@@ -3,13 +3,10 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.HardwareBIGBRAINBOTS;
-
-@Autonomous (name = "BBBAutonomous")
-public class BBBAutonomous extends LinearOpMode {
+@Autonomous (name = "BBBAutonomousBlue")
+public class BBBAutonomousBlue extends LinearOpMode {
     HardwareBIGBRAINBOTS robot = new HardwareBIGBRAINBOTS();   // Use BIGBRAINBOTS's hardware
 
     @Override
@@ -30,7 +27,7 @@ public class BBBAutonomous extends LinearOpMode {
             telemetry.update();
         }
         robot.resetEncoders();
-        robot.strafe(-0.25,1250);
+        robot.strafe(0.25,-500);
         while (robot.FrontLeftDrive.isBusy() || robot.FrontRightDrive.isBusy() || robot.RearLeftDrive.isBusy() || robot.RearRightDrive.isBusy()) {
             telemetry.addData("Path0",  "Starting at %7d :%7d :%7d :%7d",
                     robot.FrontLeftDrive.getCurrentPosition(),
@@ -56,7 +53,7 @@ public class BBBAutonomous extends LinearOpMode {
         robot.ShooterPush.setPosition(Servo.MAX_POSITION / 2);
         sleep(1000);
         robot.resetEncoders();
-        robot.drive(-0.25,-500);
+        robot.drive(-0.25,-400);
         while (robot.FrontLeftDrive.isBusy() || robot.FrontRightDrive.isBusy() || robot.RearLeftDrive.isBusy() || robot.RearRightDrive.isBusy()) {
             telemetry.addData("Path0",  "Starting at %7d :%7d :%7d :%7d",
                     robot.FrontLeftDrive.getCurrentPosition(),
@@ -72,7 +69,7 @@ public class BBBAutonomous extends LinearOpMode {
 
         }
         robot.WobbleGoalArmDrive.setPower(0);
-        robot.WobbleGoalClaw.setPosition(Servo.MIN_POSITION);
+        robot.WobbleGoalClaw.setPosition(Servo.MAX_POSITION);
         sleep(3000);
         robot.WobbleGoalArmDrive.setTargetPosition(250);
         robot.WobbleGoalArmDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
