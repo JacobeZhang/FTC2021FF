@@ -50,16 +50,17 @@ public class BBBTeleOp extends LinearOpMode {
             }
             if (armStart) {
                 antiBug = true;
-                doneAntiBug = true;
+                doneAntiBug = false;
             }
             else if (armStop) {
                 antiBug = false;
                 doneAntiBug = false;
             }
             if (armPower != 0) {
+
                 robot.WobbleGoalArmDrive.setTargetPosition(-430);
                 robot.WobbleGoalArmDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.WobbleGoalArmDrive.setPower(-1 * armPower / 4);
+                robot.WobbleGoalArmDrive.setPower(-1 * armPower / 50);
               //  while (robot.WobbleGoalArmDrive.isBusy()) {
 
              //   }
@@ -68,7 +69,8 @@ public class BBBTeleOp extends LinearOpMode {
             else if (antiBug) {
                     robot.WobbleGoalArmDrive.setTargetPosition(-200);
                     robot.WobbleGoalArmDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    robot.WobbleGoalArmDrive.setPower(-0.1);
+                    robot.WobbleGoalArmDrive.setPower(-0.2);
+                    doneAntiBug = true;
             }
             if (doneAntiBug == false) {
                     robot.WobbleGoalArmDrive.setTargetPosition(0);
@@ -76,8 +78,8 @@ public class BBBTeleOp extends LinearOpMode {
                     robot.WobbleGoalArmDrive.setPower(0.05);
                     doneAntiBug = true;
             }
-            else {
-                    robot.WobbleGoalArmDrive.setPower(0);
+            else if (doneAntiBug == true) {
+                
             }
 
           //      while (robot.WobbleGoalArmDrive.isBusy()) {
