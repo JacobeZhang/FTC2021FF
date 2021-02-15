@@ -10,10 +10,11 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.teamcode.HardwareBIGBRAINBOTS;
 
 
-@TeleOp(name = "BBBTeleOp")
-public class BBBTeleOp extends LinearOpMode {
+@TeleOp(name = "OldBBBTeleOp")
+public class OldBBBTeleOp extends LinearOpMode {
     HardwareBIGBRAINBOTS robot   = new HardwareBIGBRAINBOTS();   // Use BIGBRAINBOTS's hardware
-
+    double error;
+    double power;
     @Override
     public void runOpMode() throws InterruptedException {
         robot.init(this.hardwareMap);
@@ -21,15 +22,12 @@ public class BBBTeleOp extends LinearOpMode {
         telemetry.update();
 
         waitForStart();
-        boolean antiBug = false;
-        boolean doneAntiBug = true;
         while (opModeIsActive()) {
             double drive = gamepad1.left_stick_y;
             double strafe = gamepad1.right_stick_x;
             double turn = gamepad1.left_stick_x;
-            double armPower = gamepad2.right_stick_y;
-            boolean armStart = gamepad2.dpad_up;
-            boolean armStop = gamepad2.dpad_down;
+            boolean armup = gamepad2.dpad_up;
+            boolean armdown = gamepad2.dpad_down;
             boolean clawopen = gamepad2.dpad_left;
             boolean clawclose = gamepad2.dpad_right;
             boolean IntakeTransferForward = gamepad1.right_bumper;
@@ -48,55 +46,42 @@ public class BBBTeleOp extends LinearOpMode {
             if (IntakeTransferReverse) {
                 robot.IntakeTransferDrive.setPower(-1);
             }
-            if (armStart) {
-                antiBug = true;
-                doneAntiBug = false;
+            if (armdown) {
+               // robot.WobbleGoalArmDrive.setTargetPosition(-250);
+                // robot.WobbleGoalArmDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.WobbleGoalArmDrive.setPower(-0.05);
+                //  while (robot.WobbleGoalArmDrive.isBusy()) {
+
+                //   }
+                //      robot.WobbleGoalArmDrive.setPower(0);
             }
-            else if (armStop) {
-                antiBug = false;
-                doneAntiBug = false;
+            else {
+                error = robot.WobbleGoalArmDrive.getCurrentPosition() - 0;
+                power = -0.005 *error;
+                Range.clip(power, -0.5, 0.5);
+                robot.WobbleGoalArmDrive.setPower(power);
             }
-            if (armPower != 0) {
+            //else {
+                //robot.WobbleGoalArmDrive.setTargetPosition(0);
+                //robot.WobbleGoalArmDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                //robot.WobbleGoalArmDrive.setPower(0.1);
+              //  robot.WobbleGoalArmDrive.setPower(0);
+                //        while (robot.WobbleGoalArmDrive.isBusy()) {
 
-                robot.WobbleGoalArmDrive.setTargetPosition(-430);
-                robot.WobbleGoalArmDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.WobbleGoalArmDrive.setPower(-1 * armPower / 50);
-              //  while (robot.WobbleGoalArmDrive.isBusy()) {
+                //            }
+                //          robot.WobbleGoalArmDrive.setPower(0);
+            //}
 
-             //   }
-          //      robot.WobbleGoalArmDrive.setPower(0);
-            }
-            else if (antiBug) {
-                    robot.WobbleGoalArmDrive.setTargetPosition(-200);
-                    robot.WobbleGoalArmDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    robot.WobbleGoalArmDrive.setPower(0.05);
-                    doneAntiBug = true;
-            }
-            if (doneAntiBug == false) {
-                    robot.WobbleGoalArmDrive.setTargetPosition(0);
-                    robot.WobbleGoalArmDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    robot.WobbleGoalArmDrive.setPower(0.05);
-                    doneAntiBug = true;
-            }
-            else if (doneAntiBug == true) {
+            //        if (armup) {
+            //            robot.WobbleGoalArmDrive.setTargetPosition(200);
+            //            robot.WobbleGoalArmDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            //            robot.WobbleGoalArmDrive.setPower(1);
+            //          while (robot.WobbleGoalArmDrive.isBusy()) {
 
-            }
-
-          //      while (robot.WobbleGoalArmDrive.isBusy()) {
-
-    //            }
-      //          robot.WobbleGoalArmDrive.setPower(0);
-
-    //        if (armup) {
-    //            robot.WobbleGoalArmDrive.setTargetPosition(200);
-    //            robot.WobbleGoalArmDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    //            robot.WobbleGoalArmDrive.setPower(1);
-      //          while (robot.WobbleGoalArmDrive.isBusy()) {
-
-        //        }
-         //       robot.WobbleGoalArmDrive.setPower(0);
-     //       }
-          //  else {
+            //        }
+            //       robot.WobbleGoalArmDrive.setPower(0);
+            //       }
+            //  else {
             //    robot.WobbleGoalArmDrive.setPower(0);
             //}
             if (clawopen) {
