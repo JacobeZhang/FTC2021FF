@@ -23,6 +23,7 @@ public class BBBTeleOp extends LinearOpMode {
         waitForStart();
         boolean antiBug = false;
         boolean doneAntiBug = true;
+        int shooterCount = 0;
         while (opModeIsActive()) {
             double drive = gamepad1.left_stick_y;
             double strafe = gamepad1.right_stick_x;
@@ -37,6 +38,7 @@ public class BBBTeleOp extends LinearOpMode {
             boolean shooteron = gamepad2.b;
             boolean shooteroff = gamepad2.x;
             boolean shooterpush = gamepad2.y;
+            boolean shooterpushforcestop = gamepad2.a;
             double FLPower = Range.clip(-drive + strafe + turn, -1.0, 1.0);
             double FRPower = Range.clip(-drive - strafe - turn, -1.0, 1.0);
             double BLPower = Range.clip(-drive - strafe + turn, -1.0, 1.0);
@@ -107,10 +109,14 @@ public class BBBTeleOp extends LinearOpMode {
             }
             //checks if the button wasn't pressed last loop but is pressed this loop
             if (shooterpush){
-                robot.ShooterPush.setPosition(Servo.MAX_POSITION - 0.1);
-            }
-            else {
-                robot.ShooterPush.setPosition(Servo.MAX_POSITION / 2);
+                while (shooterCount != 3) {
+                    robot.ShooterPush.setPosition(Servo.MAX_POSITION - 0.1);
+                    sleep(1000);
+                    robot.ShooterPush.setPosition(Servo.MAX_POSITION / 2);
+                    sleep(1000);
+                    shooterCount++;
+                }
+                shooterCount = 0;
             }
             if (shooteron) {
                 robot.ShooterFlywheel.setPower(1);

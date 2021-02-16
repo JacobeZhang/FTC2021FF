@@ -133,6 +133,8 @@ public class HardwareBIGBRAINBOTS
         RearLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         RearRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         WobbleGoalArmDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ShooterFlywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
 
         // Define and initialize ALL installed servos.
         WobbleGoalClaw = hwMap.get(Servo.class, "arm_claw");
@@ -187,6 +189,16 @@ public class HardwareBIGBRAINBOTS
         RearLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         RearRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         WobbleGoalArmDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+    public void whileDrivetrainMotorIsBusy (){
+        while (FrontLeftDrive.isBusy() || FrontRightDrive.isBusy() || RearLeftDrive.isBusy() || RearRightDrive.isBusy()) {
+            telemetry.addData("Path0", "Starting at %7d :%7d :%7d :%7d",
+                    FrontLeftDrive.getCurrentPosition(),
+                    FrontRightDrive.getCurrentPosition(),
+                    RearLeftDrive.getCurrentPosition(),
+                    RearRightDrive.getCurrentPosition());
+            telemetry.update();
+        }
     }
 
 }

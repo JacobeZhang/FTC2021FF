@@ -1,13 +1,19 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
@@ -30,11 +36,26 @@ public class BBBAutonomous extends LinearOpMode {
 
     private TFObjectDetector tfod;
 
+    private BNO055IMU imu;
+    static final double TURN_SPEED = 0.1;
+    static final double P_TURN_COEFF = 0.0025;
+    static final double HEADING_THRESHOLD = 0.1;
+
     @Override
     public void runOpMode() throws InterruptedException {
         //initVuforia();
         //initTfod();
         robot.init(this.hardwareMap);
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.calibrationDataFile = "BNO055IMUCalibration.json";
+
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        imu.initialize(parameters);
+
+        Orientation orientation = imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+
         telemetry.addData("Mode", "waiting");
         telemetry.update();
         if (tfod != null) {
@@ -42,25 +63,12 @@ public class BBBAutonomous extends LinearOpMode {
             tfod.setZoom(2.5, 1.78);
         }
         waitForStart();
+        gyroTurn(TURN_SPEED, 90.0);
         robot.drive(-0.50, -1200);
-        while (robot.FrontLeftDrive.isBusy() || robot.FrontRightDrive.isBusy() || robot.RearLeftDrive.isBusy() || robot.RearRightDrive.isBusy()) {
-            telemetry.addData("Path0", "Starting at %7d :%7d :%7d :%7d",
-                    robot.FrontLeftDrive.getCurrentPosition(),
-                    robot.FrontRightDrive.getCurrentPosition(),
-                    robot.RearLeftDrive.getCurrentPosition(),
-                    robot.RearRightDrive.getCurrentPosition());
-            telemetry.update();
-        }
+        robot.whileDrivetrainMotorIsBusy();
         robot.resetEncoders();
         robot.strafe(-0.25, -300);
-        while (robot.FrontLeftDrive.isBusy() || robot.FrontRightDrive.isBusy() || robot.RearLeftDrive.isBusy() || robot.RearRightDrive.isBusy()) {
-            telemetry.addData("Path0", "Starting at %7d :%7d :%7d :%7d",
-                    robot.FrontLeftDrive.getCurrentPosition(),
-                    robot.FrontRightDrive.getCurrentPosition(),
-                    robot.RearLeftDrive.getCurrentPosition(),
-                    robot.RearRightDrive.getCurrentPosition());
-            telemetry.update();
-        }
+        robot.whileDrivetrainMotorIsBusy();
         robot.resetEncoders();
         robot.ShooterFlywheel.setPower(1);
         sleep(1000);
@@ -69,28 +77,14 @@ public class BBBAutonomous extends LinearOpMode {
         robot.ShooterPush.setPosition(Servo.MAX_POSITION - 0.1);
         sleep(1000);
         robot.strafe(-0.25, 300);
-        while (robot.FrontLeftDrive.isBusy() || robot.FrontRightDrive.isBusy() || robot.RearLeftDrive.isBusy() || robot.RearRightDrive.isBusy()) {
-            telemetry.addData("Path0", "Starting at %7d :%7d :%7d :%7d",
-                    robot.FrontLeftDrive.getCurrentPosition(),
-                    robot.FrontRightDrive.getCurrentPosition(),
-                    robot.RearLeftDrive.getCurrentPosition(),
-                    robot.RearRightDrive.getCurrentPosition());
-            telemetry.update();
-        }
+        robot.whileDrivetrainMotorIsBusy();
         robot.resetEncoders();
         robot.ShooterPush.setPosition(Servo.MAX_POSITION / 2);
         sleep(1000);
         robot.ShooterPush.setPosition(Servo.MAX_POSITION - 0.1);
         sleep(1000);
         robot.strafe(-0.25, 300);
-        while (robot.FrontLeftDrive.isBusy() || robot.FrontRightDrive.isBusy() || robot.RearLeftDrive.isBusy() || robot.RearRightDrive.isBusy()) {
-            telemetry.addData("Path0", "Starting at %7d :%7d :%7d :%7d",
-                    robot.FrontLeftDrive.getCurrentPosition(),
-                    robot.FrontRightDrive.getCurrentPosition(),
-                    robot.RearLeftDrive.getCurrentPosition(),
-                    robot.RearRightDrive.getCurrentPosition());
-            telemetry.update();
-        }
+        robot.whileDrivetrainMotorIsBusy();
         robot.resetEncoders();
         robot.ShooterPush.setPosition(Servo.MAX_POSITION / 2);
         sleep(750);
@@ -100,34 +94,13 @@ public class BBBAutonomous extends LinearOpMode {
         sleep(750);
         robot.resetEncoders();
         robot.drive(0.50, 500);
-        while (robot.FrontLeftDrive.isBusy() || robot.FrontRightDrive.isBusy() || robot.RearLeftDrive.isBusy() || robot.RearRightDrive.isBusy()) {
-            telemetry.addData("Path0", "Starting at %7d :%7d :%7d :%7d",
-                    robot.FrontLeftDrive.getCurrentPosition(),
-                    robot.FrontRightDrive.getCurrentPosition(),
-                    robot.RearLeftDrive.getCurrentPosition(),
-                    robot.RearRightDrive.getCurrentPosition());
-            telemetry.update();
-        }
+        robot.whileDrivetrainMotorIsBusy();
         robot.resetEncoders();
         robot.strafe(0.50, 1500);
-        while (robot.FrontLeftDrive.isBusy() || robot.FrontRightDrive.isBusy() || robot.RearLeftDrive.isBusy() || robot.RearRightDrive.isBusy()) {
-            telemetry.addData("Path0", "Starting at %7d :%7d :%7d :%7d",
-                    robot.FrontLeftDrive.getCurrentPosition(),
-                    robot.FrontRightDrive.getCurrentPosition(),
-                    robot.RearLeftDrive.getCurrentPosition(),
-                    robot.RearRightDrive.getCurrentPosition());
-            telemetry.update();
-        }
+        robot.whileDrivetrainMotorIsBusy();
         robot.resetEncoders();
         robot.drive(-0.50, -3500);
-        while (robot.FrontLeftDrive.isBusy() || robot.FrontRightDrive.isBusy() || robot.RearLeftDrive.isBusy() || robot.RearRightDrive.isBusy()) {
-            telemetry.addData("Path0", "Starting at %7d :%7d :%7d :%7d",
-                    robot.FrontLeftDrive.getCurrentPosition(),
-                    robot.FrontRightDrive.getCurrentPosition(),
-                    robot.RearLeftDrive.getCurrentPosition(),
-                    robot.RearRightDrive.getCurrentPosition());
-            telemetry.update();
-        }
+        robot.whileDrivetrainMotorIsBusy();
         robot.resetEncoders();
         robot.WobbleGoalClaw.setPosition(Servo.MIN_POSITION + 0.1);
         sleep(1000);
@@ -148,19 +121,55 @@ public class BBBAutonomous extends LinearOpMode {
         }
         robot.WobbleGoalArmDrive.setPower(0);
         robot.drive(1, 1000);
-        while (robot.FrontLeftDrive.isBusy() || robot.FrontRightDrive.isBusy() || robot.RearLeftDrive.isBusy() || robot.RearRightDrive.isBusy()) {
-            telemetry.addData("Path0", "Starting at %7d :%7d :%7d :%7d",
-                    robot.FrontLeftDrive.getCurrentPosition(),
-                    robot.FrontRightDrive.getCurrentPosition(),
-                    robot.RearLeftDrive.getCurrentPosition(),
-                    robot.RearRightDrive.getCurrentPosition());
-            telemetry.update();
-        }
+        robot.whileDrivetrainMotorIsBusy();
         telemetry.addData("Over", "0");
         telemetry.update();
         if (tfod != null) {
             tfod.shutdown();
         }
+    }
+
+    public void gyroTurn(double speed, double angle) {
+        double error;
+        double steer;
+        double leftSpeed, rightSpeed;
+        boolean onTarget = false;
+
+        while (opModeIsActive()) {
+            error = getError(angle);
+            if (Math.abs(error) <= HEADING_THRESHOLD) {
+                steer = 0.0;
+                leftSpeed = 0.0;
+                rightSpeed = 0.0;
+                onTarget = true;
+            } else {
+                steer = Range.clip(P_TURN_COEFF * error, -speed, speed);
+                rightSpeed = steer;
+                leftSpeed = -rightSpeed;
+            }
+            robot.FrontLeftDrive.setPower(leftSpeed);
+            robot.RearLeftDrive.setPower(leftSpeed);
+            robot.FrontRightDrive.setPower(rightSpeed);
+            robot.RearRightDrive.setPower(rightSpeed);
+
+            telemetry.addData("Target", "%5.2f", angle);
+            telemetry.addData("Err/St", "%5.2f/%5.2f", error, steer);
+            telemetry.addData("Speed.", "%5.4f:%5.4f", leftSpeed, rightSpeed);
+        }
+    }
+
+    public double getError(double targetAngle) {
+        double angleError;
+        Orientation orientation = imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+        angleError = targetAngle - orientation.thirdAngle;
+
+        if (angleError > 100) {
+            angleError = angleError - 360;
+        }
+        if (angleError <= -180) {
+            angleError = angleError + 360;
+        }
+        return angleError;
     }
     /*
     //this is my stuff
