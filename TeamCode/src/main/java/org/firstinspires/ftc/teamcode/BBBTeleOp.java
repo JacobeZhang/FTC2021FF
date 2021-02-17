@@ -109,7 +109,7 @@ public class BBBTeleOp extends LinearOpMode {
             }
             //checks if the button wasn't pressed last loop but is pressed this loop
             if (shooterpush){
-                while (shooterCount != 3) {
+                while (shooterCount < 3) {
                     robot.ShooterPush.setPosition(Servo.MAX_POSITION - 0.1);
                     sleep(1000);
                     robot.ShooterPush.setPosition(Servo.MAX_POSITION / 2);

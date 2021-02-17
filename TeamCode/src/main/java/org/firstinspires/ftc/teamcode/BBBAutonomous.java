@@ -27,46 +27,58 @@ import static java.lang.Math.abs;
 @Autonomous (name = "BBBAutonomous")
 public class BBBAutonomous extends LinearOpMode {
     HardwareBIGBRAINBOTS robot = new HardwareBIGBRAINBOTS();   // Use BIGBRAINBOTS's hardware
+    //tensorflow stuff
     private static final String TFOD_MODEL_ASSET = "UltimateGoal.tflite";
     private static final String LABEL_FIRST_ELEMENT = "Quad";
     private static final String LABEL_SECOND_ELEMENT = "Single";
     private static final String VUFORIA_KEY = "AbhyEVr/////AAABmZM8yCLGH0QTjtItBa5rMYRy02Ki/kP8EoxIHn4Ppn0WctnbSjg1lXOvzubEKaIMeNZa6Nm888zj2QpeyEnhHmrMhDQZdMc8Bm2edRuJHZQElwdFrJNIPSw79HQlZ9ZcNDrWCJRqKrnqVwhxiASqbE6/tbTMTZbL7p/ImK9VdkhTajlntfNZYe1NZy75vq1CrtIHfn66TXK61TBTxITKcuT/m/zAWFLcxfv3f7SvdmaQEtvVBqXwyiDp/z2I+9gCcah7h9VFSrjVsbhsXKTRXef/PTnWTvy5RLYC5eM1u77PC+9ugrD6a/6lHAs+r9rOnTEkSNsNmDcXReKQqIpOkFwZLZpdhPD3LPzAYjnIWuwS";
-
     private VuforiaLocalizer vuforia;
-
     private TFObjectDetector tfod;
+    //tensorflow stuff end
 
+    //imu stuff
     private BNO055IMU imu;
     static final double TURN_SPEED = 0.1;
     static final double P_TURN_COEFF = 0.0025;
     static final double HEADING_THRESHOLD = 0.1;
+    //imu stuff end
+
+    static final double COUNTS_PER_INCH = 43.5; //handy for using inches
 
     @Override
     public void runOpMode() throws InterruptedException {
-        //initVuforia();
-        //initTfod();
+        initVuforia(); //for tensorflow
+        initTfod(); //for tensorflow
+        //gets all the hardware from HARDWAREBIGBRAINBOTS
         robot.init(this.hardwareMap);
+
+        //initialize IMU
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
         parameters.calibrationDataFile = "BNO055IMUCalibration.json";
-
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
-
         Orientation orientation = imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+        telemetry.addData("Third angle", "%.1f", orientation.thirdAngle);
+        telemetry.update();
+        //initialize IMU end
 
         telemetry.addData("Mode", "waiting");
         telemetry.update();
-        if (tfod != null) {
+        if (tfod != null) { //tensorflow stuff
             tfod.activate();
-            tfod.setZoom(2.5, 1.78);
+          //  tfod.setZoom(2.5, 1.78);
         }
         waitForStart();
-        gyroTurn(TURN_SPEED, 90.0);
+        objectDetection();
+       // gyroTurn(TURN_SPEED, 90.0);
+        sleep (30000);
+        //move forward to prepare to shoot into power goal
         robot.drive(-0.50, -1200);
         robot.whileDrivetrainMotorIsBusy();
         robot.resetEncoders();
+
         robot.strafe(-0.25, -300);
         robot.whileDrivetrainMotorIsBusy();
         robot.resetEncoders();
@@ -116,10 +128,6 @@ public class BBBAutonomous extends LinearOpMode {
         robot.WobbleGoalArmDrive.setTargetPosition(0);
         robot.WobbleGoalArmDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.WobbleGoalArmDrive.setPower(0.1);
-        while (robot.WobbleGoalArmDrive.isBusy()) {
-
-        }
-        robot.WobbleGoalArmDrive.setPower(0);
         robot.drive(1, 1000);
         robot.whileDrivetrainMotorIsBusy();
         telemetry.addData("Over", "0");
@@ -186,7 +194,7 @@ public class BBBAutonomous extends LinearOpMode {
     }
 
      */
-    /*
+
     private void initVuforia() {
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
 
@@ -251,5 +259,5 @@ public class BBBAutonomous extends LinearOpMode {
         }
 
     }
-*/
+
 }
