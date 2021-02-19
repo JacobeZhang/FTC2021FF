@@ -27,7 +27,7 @@ import static java.lang.Math.abs;
 @Autonomous (name = "BBBAutonomous")
 public class BBBAutonomous extends LinearOpMode {
     HardwareBIGBRAINBOTS robot = new HardwareBIGBRAINBOTS();   // Use BIGBRAINBOTS's hardware
-    //tensorflow stuff
+    //tensorflow stuffsudo apt-get install numix-gtk-theme numix-icon-theme-circle numix-icon-theme-square
     private static final String TFOD_MODEL_ASSET = "UltimateGoal.tflite";
     private static final String LABEL_FIRST_ELEMENT = "Quad";
     private static final String LABEL_SECOND_ELEMENT = "Single";
@@ -39,8 +39,8 @@ public class BBBAutonomous extends LinearOpMode {
     //imu stuff
     private BNO055IMU imu;
     static final double TURN_SPEED = 0.5;
-    static final double P_TURN_COEFF = 0.0025;
-    static final double HEADING_THRESHOLD = 0.1;
+    static final double P_TURN_COEFF = 0.025;
+    static final double HEADING_THRESHOLD = 0.5;
     //imu stuff end
 
     static final double COUNTS_PER_INCH = 43.5; //handy for using inches
@@ -68,26 +68,19 @@ public class BBBAutonomous extends LinearOpMode {
         telemetry.update();
         if (tfod != null) { //tensorflow stuff
             tfod.activate();
-            tfod.setZoom(2.5, 1.78);
+            tfod.setZoom(2.0, 1.50);
         }
         waitForStart();
-        robot.drive(-0.50, -(int)(5*COUNTS_PER_INCH));
-        robot.whileDrivetrainMotorIsBusy();
-        robot.resetEncoders();
+        robot.drive(-0.75, -(int)(17.5*COUNTS_PER_INCH));
         telemetry.addData("drive","finished");
         telemetry.update();
-        gyroTurn(TURN_SPEED,-30.0);
+        gyroTurn(TURN_SPEED,-37);
+        telemetry.addData("turn", "finished");
+        telemetry.update();
         objectDetection();
-       // gyroTurn(TURN_SPEED, 90.0);
-        sleep (30000);
-        //move forward to prepare to shoot into power goal
-        robot.drive(-0.50, -1200);
-        robot.whileDrivetrainMotorIsBusy();
-        robot.resetEncoders();
-
+        gyroTurn(TURN_SPEED, 37);
+        robot.drive(-0.50, -439); //1200 encoder counts (original) - 5 inches
         robot.strafe(-0.25, -300);
-        robot.whileDrivetrainMotorIsBusy();
-        robot.resetEncoders();
         robot.ShooterFlywheel.setPower(1);
         sleep(1000);
         robot.ShooterPush.setPosition(Servo.MAX_POSITION / 2);
@@ -95,31 +88,18 @@ public class BBBAutonomous extends LinearOpMode {
         robot.ShooterPush.setPosition(Servo.MAX_POSITION - 0.1);
         sleep(1000);
         robot.strafe(-0.25, 300);
-        robot.whileDrivetrainMotorIsBusy();
-        robot.resetEncoders();
         robot.ShooterPush.setPosition(Servo.MAX_POSITION / 2);
         sleep(1000);
         robot.ShooterPush.setPosition(Servo.MAX_POSITION - 0.1);
         sleep(1000);
         robot.strafe(-0.25, 300);
-        robot.whileDrivetrainMotorIsBusy();
-        robot.resetEncoders();
         robot.ShooterPush.setPosition(Servo.MAX_POSITION / 2);
         sleep(750);
         robot.ShooterPush.setPosition(Servo.MAX_POSITION - 0.05);
         sleep(750);
         robot.ShooterPush.setPosition(Servo.MAX_POSITION / 2);
         sleep(750);
-        robot.resetEncoders();
-        robot.drive(0.50, 500);
-        robot.whileDrivetrainMotorIsBusy();
-        robot.resetEncoders();
-        robot.strafe(0.50, 1500);
-        robot.whileDrivetrainMotorIsBusy();
-        robot.resetEncoders();
-        robot.drive(-0.50, -3500);
-        robot.whileDrivetrainMotorIsBusy();
-        robot.resetEncoders();
+        robot.drive(-0.50, -3000);
         robot.WobbleGoalClaw.setPosition(Servo.MIN_POSITION + 0.1);
         sleep(1000);
         robot.WobbleGoalArmDrive.setTargetPosition(-300);
@@ -135,7 +115,6 @@ public class BBBAutonomous extends LinearOpMode {
         robot.WobbleGoalArmDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.WobbleGoalArmDrive.setPower(0.1);
         robot.drive(1, 1000);
-        robot.whileDrivetrainMotorIsBusy();
         telemetry.addData("Over", "0");
         telemetry.update();
         if (tfod != null) {
@@ -148,28 +127,27 @@ public class BBBAutonomous extends LinearOpMode {
         double steer;
         double leftSpeed, rightSpeed;
         boolean onTarget = false;
-
-        while (opModeIsActive()) {
-            error = getError(angle);
-            if (Math.abs(error) <= HEADING_THRESHOLD) {
-                steer = 0.0;
-                leftSpeed = 0.0;
-                rightSpeed = 0.0;
-                onTarget = true;
-            } else {
-                steer = Range.clip(P_TURN_COEFF * error, -speed, speed);
-                rightSpeed = steer;
-                leftSpeed = -rightSpeed;
-            }
+        error = getError(angle);
+        while (Math.abs(error) > HEADING_THRESHOLD) {
+            steer = Range.clip(P_TURN_COEFF * error, -speed, speed);
+            rightSpeed = steer;
+            leftSpeed = -rightSpeed;
             robot.FrontLeftDrive.setPower(leftSpeed);
             robot.RearLeftDrive.setPower(leftSpeed);
             robot.FrontRightDrive.setPower(rightSpeed);
             robot.RearRightDrive.setPower(rightSpeed);
 
-  //          telemetry.addData("Target", "%5.2f", angle);
-  //          telemetry.addData("Err/St", "%5.2f/%5.2f", error, steer);
-  //          telemetry.addData("Speed.", "%5.4f:%5.4f", leftSpeed, rightSpeed);
+            telemetry.addData("Target", "%5.2f", angle);
+            telemetry.addData("Err/St", "%5.2f/%5.2f", error, steer);
+            telemetry.addData("Speed.", "%5.4f:%5.4f", leftSpeed, rightSpeed);
+            error = getError(angle);
         }
+        robot.FrontLeftDrive.setPower(0);
+        robot.FrontRightDrive.setPower(0);
+        robot.RearLeftDrive.setPower(0);
+        robot.RearRightDrive.setPower(0);
+        telemetry.addData("turn","stopped");
+        telemetry.update();
     }
 
     public double getError(double targetAngle) {

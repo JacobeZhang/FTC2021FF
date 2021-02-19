@@ -61,28 +61,27 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.tel
  * Servo channel:  Servo to open left claw:  "WobbleGoalArmDrive"
  * Servo channel:  Servo to open right claw: "WobbleGoalClaw"
  */
-public class HardwareBIGBRAINBOTS
-{
+public class HardwareBIGBRAINBOTS {
     /* Public OpMode members. */
-    public DcMotor  FrontLeftDrive   = null;
-    public DcMotor  FrontRightDrive  = null;
-    public DcMotor  RearLeftDrive     = null;
-    public DcMotor RearRightDrive  =  null;
-    public DcMotor IntakeTransferDrive  =  null;
+    public DcMotor FrontLeftDrive = null;
+    public DcMotor FrontRightDrive = null;
+    public DcMotor RearLeftDrive = null;
+    public DcMotor RearRightDrive = null;
+    public DcMotor IntakeTransferDrive = null;
     public DcMotor ShooterFlywheel = null;
-    public DcMotor    WobbleGoalArmDrive    = null;
-    public Servo    WobbleGoalClaw   = null;
-    public Servo   ShooterPush = null;
+    public DcMotor WobbleGoalArmDrive = null;
+    public Servo WobbleGoalClaw = null;
+    public Servo ShooterPush = null;
 
 
-    public static final double MID_SERVO       =  0.5 ;
+    public static final double MID_SERVO = 0.5;
 
     /* local OpMode members. */
-    HardwareMap hwMap           =  null;
-    private ElapsedTime period  = new ElapsedTime();
+    HardwareMap hwMap = null;
+    private ElapsedTime period = new ElapsedTime();
 
     /* Constructor */
-    public HardwareBIGBRAINBOTS(){
+    public HardwareBIGBRAINBOTS() {
 
     }
 
@@ -90,14 +89,14 @@ public class HardwareBIGBRAINBOTS
     public void init(HardwareMap ahwMap) {
         // Save reference to Hardware map
         hwMap = ahwMap;
-       // Define and Initialize Motors
-        FrontLeftDrive  = hwMap.get(DcMotor.class, "FL_DCmotor");
+        // Define and Initialize Motors
+        FrontLeftDrive = hwMap.get(DcMotor.class, "FL_DCmotor");
         FrontRightDrive = hwMap.get(DcMotor.class, "FR_DCmotor");
         RearLeftDrive = hwMap.get(DcMotor.class, "RL_DCmotor");
         RearRightDrive = hwMap.get(DcMotor.class, "RR_DCmotor");
         IntakeTransferDrive = hwMap.get(DcMotor.class, "IntakeTransferMotor");
         ShooterFlywheel = hwMap.get(DcMotor.class, "ShooterDrive");
-        WobbleGoalArmDrive  = hwMap.get(DcMotor.class, "arm_motor");
+        WobbleGoalArmDrive = hwMap.get(DcMotor.class, "arm_motor");
 
 
         FrontLeftDrive.setDirection(DcMotor.Direction.FORWARD);
@@ -140,7 +139,8 @@ public class HardwareBIGBRAINBOTS
         WobbleGoalClaw = hwMap.get(Servo.class, "arm_claw");
         ShooterPush = hwMap.get(Servo.class, "Shooter_Arm");
     }
-    public void drive (double power, int EncoderCounts){
+
+    public void drive(double power, int EncoderCounts) {
         FrontLeftDrive.setTargetPosition(EncoderCounts);
         FrontRightDrive.setTargetPosition(EncoderCounts);
         RearLeftDrive.setTargetPosition(EncoderCounts);
@@ -153,8 +153,30 @@ public class HardwareBIGBRAINBOTS
         FrontRightDrive.setPower(power);
         RearLeftDrive.setPower(power);
         RearRightDrive.setPower(power);
+        while (FrontLeftDrive.isBusy() || FrontRightDrive.isBusy() || RearLeftDrive.isBusy() || RearRightDrive.isBusy()) {
+            //telemetry.addData("Path0", "Starting at %7d :%7d :%7d :%7d",
+            //        FrontLeftDrive.getCurrentPosition(),
+            //            FrontRightDrive.getCurrentPosition(),
+            //          RearLeftDrive.getCurrentPosition(),
+            //        RearRightDrive.getCurrentPosition());
+            //telemetry.update();
+        }
+        FrontLeftDrive.setPower(0);
+        FrontRightDrive.setPower(0);
+        RearLeftDrive.setPower(0);
+        RearRightDrive.setPower(0);
+        FrontLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FrontRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        RearLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        RearRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        WobbleGoalArmDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FrontLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        FrontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        RearLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        RearRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
-    public void strafe (double power, int EncoderCounts){
+
+    public void strafe(double power, int EncoderCounts) {
         FrontLeftDrive.setTargetPosition(-1 * EncoderCounts);
         FrontRightDrive.setTargetPosition(EncoderCounts);
         RearLeftDrive.setTargetPosition(EncoderCounts);
@@ -167,9 +189,31 @@ public class HardwareBIGBRAINBOTS
         FrontRightDrive.setPower(power);
         RearLeftDrive.setPower(power);
         RearRightDrive.setPower(-1 * power);
+        while (FrontLeftDrive.isBusy() || FrontRightDrive.isBusy() || RearLeftDrive.isBusy() || RearRightDrive.isBusy()) {
+            //telemetry.addData("Path0", "Starting at %7d :%7d :%7d :%7d",
+            //        FrontLeftDrive.getCurrentPosition(),
+            //            FrontRightDrive.getCurrentPosition(),
+            //          RearLeftDrive.getCurrentPosition(),
+            //        RearRightDrive.getCurrentPosition());
+            //telemetry.update();
+        }
+        FrontLeftDrive.setPower(0);
+        FrontRightDrive.setPower(0);
+        RearLeftDrive.setPower(0);
+        RearRightDrive.setPower(0);
+        FrontLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FrontRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        RearLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        RearRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        WobbleGoalArmDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FrontLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        FrontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        RearLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        RearRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         //telemetry.addData("Motors", "left (%.2f), right (%.2f)", 0,power);
     }
-    public void turn (double power, int EncoderCounts){
+
+    public void turn(double power, int EncoderCounts) {
         FrontLeftDrive.setTargetPosition(-1 * EncoderCounts);
         FrontRightDrive.setTargetPosition(EncoderCounts);
         RearLeftDrive.setTargetPosition(-1 * EncoderCounts);
@@ -182,27 +226,26 @@ public class HardwareBIGBRAINBOTS
         FrontRightDrive.setPower(power);
         RearLeftDrive.setPower(-1 * power);
         RearRightDrive.setPower(power);
-    }
-    public void resetEncoders (){
+        while (FrontLeftDrive.isBusy() || FrontRightDrive.isBusy() || RearLeftDrive.isBusy() || RearRightDrive.isBusy()) {
+            //telemetry.addData("Path0", "Starting at %7d :%7d :%7d :%7d",
+            //        FrontLeftDrive.getCurrentPosition(),
+            //            FrontRightDrive.getCurrentPosition(),
+            //          RearLeftDrive.getCurrentPosition(),
+            //        RearRightDrive.getCurrentPosition());
+            //telemetry.update();
+        }
+        FrontLeftDrive.setPower(0);
+        FrontRightDrive.setPower(0);
+        RearLeftDrive.setPower(0);
+        RearRightDrive.setPower(0);
         FrontLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         FrontRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         RearLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         RearRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         WobbleGoalArmDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FrontLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        FrontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        RearLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        RearRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
-    public void whileDrivetrainMotorIsBusy (){
-        while (FrontLeftDrive.isBusy() || FrontRightDrive.isBusy() || RearLeftDrive.isBusy() || RearRightDrive.isBusy()) {
-            //telemetry.addData("Path0", "Starting at %7d :%7d :%7d :%7d",
-            //        FrontLeftDrive.getCurrentPosition(),
-        //            FrontRightDrive.getCurrentPosition(),
-          //          RearLeftDrive.getCurrentPosition(),
-            //        RearRightDrive.getCurrentPosition());
-            //telemetry.update();
-        }
-        //FrontLeftDrive.setPower(0);
-        //FrontRightDrive.setPower(0);
-        //RearLeftDrive.setPower(0);
-        //RearRightDrive.setPower(0);
-    }
-
 }
