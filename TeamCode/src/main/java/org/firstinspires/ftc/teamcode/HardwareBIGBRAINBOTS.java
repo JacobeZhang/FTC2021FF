@@ -192,13 +192,17 @@ public class HardwareBIGBRAINBOTS
     }
     public void whileDrivetrainMotorIsBusy (){
         while (FrontLeftDrive.isBusy() || FrontRightDrive.isBusy() || RearLeftDrive.isBusy() || RearRightDrive.isBusy()) {
-            telemetry.addData("Path0", "Starting at %7d :%7d :%7d :%7d",
-                    FrontLeftDrive.getCurrentPosition(),
-                    FrontRightDrive.getCurrentPosition(),
-                    RearLeftDrive.getCurrentPosition(),
-                    RearRightDrive.getCurrentPosition());
-            telemetry.update();
+            //telemetry.addData("Path0", "Starting at %7d :%7d :%7d :%7d",
+            //        FrontLeftDrive.getCurrentPosition(),
+        //            FrontRightDrive.getCurrentPosition(),
+          //          RearLeftDrive.getCurrentPosition(),
+            //        RearRightDrive.getCurrentPosition());
+            //telemetry.update();
         }
+        //FrontLeftDrive.setPower(0);
+        //FrontRightDrive.setPower(0);
+        //RearLeftDrive.setPower(0);
+        //RearRightDrive.setPower(0);
     }
 
 }

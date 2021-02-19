@@ -38,7 +38,7 @@ public class BBBAutonomous extends LinearOpMode {
 
     //imu stuff
     private BNO055IMU imu;
-    static final double TURN_SPEED = 0.1;
+    static final double TURN_SPEED = 0.5;
     static final double P_TURN_COEFF = 0.0025;
     static final double HEADING_THRESHOLD = 0.1;
     //imu stuff end
@@ -68,9 +68,15 @@ public class BBBAutonomous extends LinearOpMode {
         telemetry.update();
         if (tfod != null) { //tensorflow stuff
             tfod.activate();
-          //  tfod.setZoom(2.5, 1.78);
+            tfod.setZoom(2.5, 1.78);
         }
         waitForStart();
+        robot.drive(-0.50, -(int)(5*COUNTS_PER_INCH));
+        robot.whileDrivetrainMotorIsBusy();
+        robot.resetEncoders();
+        telemetry.addData("drive","finished");
+        telemetry.update();
+        gyroTurn(TURN_SPEED,-30.0);
         objectDetection();
        // gyroTurn(TURN_SPEED, 90.0);
         sleep (30000);
@@ -160,9 +166,9 @@ public class BBBAutonomous extends LinearOpMode {
             robot.FrontRightDrive.setPower(rightSpeed);
             robot.RearRightDrive.setPower(rightSpeed);
 
-            telemetry.addData("Target", "%5.2f", angle);
-            telemetry.addData("Err/St", "%5.2f/%5.2f", error, steer);
-            telemetry.addData("Speed.", "%5.4f:%5.4f", leftSpeed, rightSpeed);
+  //          telemetry.addData("Target", "%5.2f", angle);
+  //          telemetry.addData("Err/St", "%5.2f/%5.2f", error, steer);
+  //          telemetry.addData("Speed.", "%5.4f:%5.4f", leftSpeed, rightSpeed);
         }
     }
 
