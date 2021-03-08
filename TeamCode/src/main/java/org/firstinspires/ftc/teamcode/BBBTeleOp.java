@@ -71,13 +71,13 @@ public class BBBTeleOp extends LinearOpMode {
             else if (antiBug) {
                     robot.WobbleGoalArmDrive.setTargetPosition(-200);
                     robot.WobbleGoalArmDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    robot.WobbleGoalArmDrive.setPower(0.05);
+                    robot.WobbleGoalArmDrive.setPower(0.5);
                     doneAntiBug = true;
             }
             if (doneAntiBug == false) {
                     robot.WobbleGoalArmDrive.setTargetPosition(0);
                     robot.WobbleGoalArmDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    robot.WobbleGoalArmDrive.setPower(0.05);
+                    robot.WobbleGoalArmDrive.setPower(0.5);
                     doneAntiBug = true;
             }
             else if (doneAntiBug == true) {
@@ -109,14 +109,9 @@ public class BBBTeleOp extends LinearOpMode {
             }
             //checks if the button wasn't pressed last loop but is pressed this loop
             if (shooterpush){
-                while (shooterCount < 3) {
-                    robot.ShooterPush.setPosition(Servo.MAX_POSITION - 0.1);
-                    sleep(1000);
-                    robot.ShooterPush.setPosition(Servo.MAX_POSITION / 2);
-                    sleep(1000);
-                    shooterCount++;
-                }
-                shooterCount = 0;
+                robot.ShooterPush.setPosition(Servo.MAX_POSITION - 0.1);
+            } else {
+                robot.ShooterPush.setPosition(Servo.MAX_POSITION / 2);
             }
             if (shooteron) {
                 robot.ShooterFlywheel.setPower(1);

@@ -132,7 +132,7 @@ public class HardwareBIGBRAINBOTS {
         RearLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         RearRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         WobbleGoalArmDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        ShooterFlywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //ShooterFlywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 
         // Define and initialize ALL installed servos.
