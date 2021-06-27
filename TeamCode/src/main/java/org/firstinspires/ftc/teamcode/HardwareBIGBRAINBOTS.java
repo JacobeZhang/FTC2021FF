@@ -46,9 +46,8 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.tel
  * This is NOT an opmode.
  *
  * This class can be used to define all the specific hardware for a single robot.
- * In this case that robot is a Pushbot.
- * See PushbotTeleopTank_Iterative and others classes starting with "Pushbot" for usage examples.
- *
+ * In this case that robot is a BIGBRAINBOTS.
+
  * This hardware class assumes the following device names have been configured on the robot:
  * Note:  All names are lower case and some have single spaces between words.
  *
@@ -141,6 +140,12 @@ public class HardwareBIGBRAINBOTS {
     }
 
     public void drive(double power, int EncoderCounts) {
+        FrontLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FrontRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        RearLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        RearRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        WobbleGoalArmDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         FrontLeftDrive.setTargetPosition(EncoderCounts);
         FrontRightDrive.setTargetPosition(EncoderCounts);
         RearLeftDrive.setTargetPosition(EncoderCounts);
@@ -165,11 +170,7 @@ public class HardwareBIGBRAINBOTS {
         FrontRightDrive.setPower(0);
         RearLeftDrive.setPower(0);
         RearRightDrive.setPower(0);
-        FrontLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        FrontRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        RearLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        RearRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        WobbleGoalArmDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         FrontLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         FrontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         RearLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -177,6 +178,12 @@ public class HardwareBIGBRAINBOTS {
     }
 
     public void strafe(double power, int EncoderCounts) {
+        FrontLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FrontRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        RearLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        RearRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        WobbleGoalArmDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         FrontLeftDrive.setTargetPosition(-1 * EncoderCounts);
         FrontRightDrive.setTargetPosition(EncoderCounts);
         RearLeftDrive.setTargetPosition(EncoderCounts);
@@ -201,11 +208,7 @@ public class HardwareBIGBRAINBOTS {
         FrontRightDrive.setPower(0);
         RearLeftDrive.setPower(0);
         RearRightDrive.setPower(0);
-        FrontLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        FrontRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        RearLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        RearRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        WobbleGoalArmDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         FrontLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         FrontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         RearLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
