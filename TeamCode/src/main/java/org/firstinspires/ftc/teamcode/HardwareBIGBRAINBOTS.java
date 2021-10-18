@@ -39,6 +39,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+
+import java.util.Base64;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
@@ -145,7 +148,6 @@ public class HardwareBIGBRAINBOTS {
         RearLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         RearRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         WobbleGoalArmDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
         FrontLeftDrive.setTargetPosition(EncoderCounts);
         FrontRightDrive.setTargetPosition(EncoderCounts);
         RearLeftDrive.setTargetPosition(EncoderCounts);
@@ -250,5 +252,14 @@ public class HardwareBIGBRAINBOTS {
         FrontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         RearLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         RearRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+    public void armPID(double power, int EncoderCounts){
+        double newPower = power + getError(EncoderCounts);
+        WobbleGoalArmDrive.setPower(newPower);
+    }
+    public double getError(int EncoderCounts){
+        double currentPosition = WobbleGoalArmDrive.getCurrentPosition();
+        double error = EncoderCounts - currentPosition;
+        return error;
     }
 }

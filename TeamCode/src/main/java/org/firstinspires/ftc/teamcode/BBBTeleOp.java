@@ -21,16 +21,14 @@ public class BBBTeleOp extends LinearOpMode {
         telemetry.update();
 
         waitForStart();
-        boolean antiBug = false;
-        boolean doneAntiBug = true;
-        int shooterCount = 0;
+        boolean goDown = false;
+        boolean goUp = false;
         while (opModeIsActive()) {
             double drive = gamepad1.left_stick_y;
             double strafe = gamepad1.right_stick_x;
             double turn = gamepad1.left_stick_x;
-            double armPower = gamepad2.right_stick_y;
-            boolean armStart = gamepad2.dpad_up;
-            boolean armStop = gamepad2.dpad_down;
+            boolean armDown = gamepad2.dpad_up;
+            boolean armUp = gamepad2.dpad_down;
             boolean clawopen = gamepad2.dpad_left;
             boolean clawclose = gamepad2.dpad_right;
             boolean IntakeTransferForward = gamepad1.right_bumper;
@@ -50,37 +48,33 @@ public class BBBTeleOp extends LinearOpMode {
             if (IntakeTransferReverse) {
                 robot.IntakeTransferDrive.setPower(-1);
             }
-            if (armStart) {
-                antiBug = true;
-                doneAntiBug = false;
-            }
-            else if (armStop) {
-                antiBug = false;
-                doneAntiBug = false;
-            }
-            if (armPower != 0) {
-
-                robot.WobbleGoalArmDrive.setTargetPosition(-430);
+            if (armDown) {
+                robot.WobbleGoalArmDrive.setTargetPosition(-100);
                 robot.WobbleGoalArmDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.WobbleGoalArmDrive.setPower(-1 * armPower / 50);
-              //  while (robot.WobbleGoalArmDrive.isBusy()) {
-
-             //   }
-          //      robot.WobbleGoalArmDrive.setPower(0);
+                robot.WobbleGoalArmDrive.setPower(0.5);
+                //goDown = true;
+                //goUp = true;
             }
-            else if (antiBug) {
-                    robot.WobbleGoalArmDrive.setTargetPosition(-200);
+            if (armUp) {
+                robot.WobbleGoalArmDrive.setTargetPosition(150);
+                robot.WobbleGoalArmDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.WobbleGoalArmDrive.setPower(0.15);
+                //goDown = false;
+                //goUp = true;
+            }
+            if (goDown) {
+                    robot.WobbleGoalArmDrive.setTargetPosition(200);
                     robot.WobbleGoalArmDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    robot.WobbleGoalArmDrive.setPower(0.5);
-                    doneAntiBug = true;
+                    robot.WobbleGoalArmDrive.setPower(-0.5);
+                    goUp = false;
             }
-            if (doneAntiBug == false) {
+            if (goUp) {
                     robot.WobbleGoalArmDrive.setTargetPosition(0);
                     robot.WobbleGoalArmDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.WobbleGoalArmDrive.setPower(0.5);
-                    doneAntiBug = true;
+                    goUp = false;
             }
-            else if (doneAntiBug == true) {
+            else if (goUp == false) {
 
             }
 

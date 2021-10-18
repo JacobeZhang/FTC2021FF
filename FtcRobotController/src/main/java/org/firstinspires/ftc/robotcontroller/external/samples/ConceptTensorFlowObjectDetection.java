@@ -114,6 +114,7 @@ public class ConceptTensorFlowObjectDetection extends LinearOpMode {
         waitForStart();
 
         if (opModeIsActive()) {
+            int count=0;
             while (opModeIsActive()) {
                 if (tfod != null) {
                     // getUpdatedRecognitions() will return null if no new information is available since
@@ -131,6 +132,7 @@ public class ConceptTensorFlowObjectDetection extends LinearOpMode {
                         telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
                                 recognition.getRight(), recognition.getBottom());
                       }
+
                       telemetry.update();
                     }
                 }

@@ -118,6 +118,7 @@ public class PushbotAutoDriveByGyro_Linear extends LinearOpMode {
         while (!isStopRequested() && gyro.isCalibrating())  {
             sleep(50);
             idle();
+
         }
 
         telemetry.addData(">", "Robot Ready.");    //
