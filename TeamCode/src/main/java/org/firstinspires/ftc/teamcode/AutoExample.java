@@ -16,6 +16,11 @@ public class AutoExample extends LinearOpMode {
         leftMotor = hardwareMap.get(DcMotor.class, "leftMotor");
         rightMotor = hardwareMap.get(DcMotor.class, "rightMotor");
         arm = hardwareMap.get(Servo.class, "arm");
+
+        claw = hardwareMap.get(Servo.class, "claw");
+
+
+
         rightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -47,4 +52,3 @@ public class AutoExample extends LinearOpMode {
         //actual opmode
     }
 }
-
